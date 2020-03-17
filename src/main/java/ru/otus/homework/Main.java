@@ -1,7 +1,6 @@
 package ru.otus.homework;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.homework.model.Question;
 import ru.otus.homework.model.Session;
 import ru.otus.homework.service.QuestionsService;
 import ru.otus.homework.service.QuestionsServiceImpl;
@@ -10,7 +9,6 @@ import ru.otus.homework.service.ResultServiceImpl;
 import ru.otus.homework.service.TestProcessingService;
 import ru.otus.homework.service.TestProcessingServiceFreeAnswersImpl;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
