@@ -5,7 +5,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="questionsDaoCsv" class="ru.otus.homework.dao.QuestionsDaoCsvImpl">
-        <constructor-arg value="csv/arithmetic_ques1tions.csv"/>
+        <constructor-arg value="csv/arithmetic_questions.csv"/>
     </bean>
     <bean id="questionsService" class="ru.otus.homework.service.QuestionsServiceImpl">
         <constructor-arg ref="questionsDaoCsv"/>
