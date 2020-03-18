@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 @Data
 public class Session {
 
