@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.dao.QuestionsDao;
 import ru.otus.homework.model.Question;
@@ -22,13 +24,8 @@ class QuestionsServiceImplTest {
 
     @Mock
     private QuestionsDao dao;
-
-    private QuestionsService service;
-
-    @BeforeEach
-    void setUp() {
-        service = new QuestionsServiceImpl(dao);
-    }
+    @InjectMocks
+    private QuestionsServiceImpl service;
 
     @Test
     @DisplayName("возвращать список из двух объектов Question")
