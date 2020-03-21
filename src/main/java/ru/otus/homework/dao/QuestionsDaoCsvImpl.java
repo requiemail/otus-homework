@@ -1,5 +1,7 @@
 package ru.otus.homework.dao;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.error.ResourceNotFoundException;
 import ru.otus.homework.model.Question;
 import ru.otus.homework.service.utils.CsvAsBufferedReaderService;
@@ -9,17 +11,17 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository("QuestionDao")
 public class QuestionsDaoCsvImpl implements QuestionsDao {
 
     private final String pathToFile;
 
-    public QuestionsDaoCsvImpl(String pathToFile) {
+    public QuestionsDaoCsvImpl(@Value("${csv.path}") String pathToFile) {
         this.pathToFile = pathToFile;
     }
 
     public List<Question> findAll() {
         List<Question> questions = new ArrayList<>();
-
         try (BufferedReader br = CsvAsBufferedReaderService.getBufferedReader(pathToFile)) {
             String question;
             String csvSplitBy = ";";
@@ -34,9 +36,7 @@ public class QuestionsDaoCsvImpl implements QuestionsDao {
         } catch (IOException | ResourceNotFoundException e) {
             e.printStackTrace();
         }
-
         return questions;
-
     }
 
 }

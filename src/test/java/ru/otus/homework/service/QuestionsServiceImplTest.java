@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.dao.QuestionsDao;
 import ru.otus.homework.model.Question;
+import ru.otus.homework.service.impl.QuestionsServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
