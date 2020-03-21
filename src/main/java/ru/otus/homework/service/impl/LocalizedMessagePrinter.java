@@ -9,7 +9,7 @@ import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
-public class PrinterLocalizedMessage implements Printer {
+public class LocalizedMessagePrinter implements Printer {
 
     private final Locale defaultLocale = Locale.getDefault();
     private final MessageSource ms;
