@@ -1,9 +1,12 @@
-package ru.otus.homework.service;
+package ru.otus.homework.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.homework.model.Question;
+import ru.otus.homework.service.ResultService;
 
 import java.util.Map;
 
+@Service
 public class ResultServiceImpl implements ResultService {
 
     public int calculateTestResult(Map<Question, String> answers) {
