@@ -1,17 +1,13 @@
 package ru.otus.homework;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
-import ru.otus.homework.service.SessionService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@ComponentScan
-@PropertySource(value = "classpath:application.properties")
+@SpringBootApplication
 public class Main {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-        context.getBean(SessionService.class).startSession();
+        SpringApplication.run(Main.class, args);
     }
 
 }
