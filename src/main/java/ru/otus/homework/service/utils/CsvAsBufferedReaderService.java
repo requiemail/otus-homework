@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public class CsvAsBufferedReaderService {
 
-    public static BufferedReader getBufferedReader(final String path) throws ResourceNotFoundException {
-        Optional<InputStream> resourceAsStream = Optional.ofNullable(ClassLoader.getSystemClassLoader().getResourceAsStream(path));
+    public BufferedReader getBufferedReader(final String path) throws ResourceNotFoundException {
+        Optional<InputStream> resourceAsStream = Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(path));
         InputStreamReader reader = new InputStreamReader(resourceAsStream.orElseThrow(() -> new ResourceNotFoundException(path)));
         return new BufferedReader(reader);
     }

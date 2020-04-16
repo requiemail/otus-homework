@@ -22,7 +22,7 @@ public class QuestionsDaoCsvImpl implements QuestionsDao {
 
     public List<Question> findAll() {
         List<Question> questions = new ArrayList<>();
-        try (BufferedReader br = CsvAsBufferedReaderService.getBufferedReader(pathToFile)) {
+        try (BufferedReader br = new CsvAsBufferedReaderService().getBufferedReader(pathToFile)) {
             String question;
             String csvSplitBy = ";";
             while ((question = br.readLine()) != null) {

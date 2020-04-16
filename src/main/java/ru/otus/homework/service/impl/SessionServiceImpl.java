@@ -21,7 +21,7 @@ public class SessionServiceImpl implements SessionService {
     private final Printer printer;
 
     @Override
-    public void startSession() {
+    public Session startSession() {
         Session session = new Session();
         Scanner scanner = new Scanner(System.in);
         printer.printLn("greeting.firstName", null);
@@ -29,6 +29,12 @@ public class SessionServiceImpl implements SessionService {
         printer.printLn("greeting.lastName", null);
         session.setUserLastName(scanner.nextLine());
         printer.printLn("greeting.mainGreeting", new String[]{session.userToString()});
+        return session;
+
+    }
+
+    @Override
+    public void processSession(Session session){
 
         processor.processTest(session, questionsService.getAll());
 
@@ -40,6 +46,5 @@ public class SessionServiceImpl implements SessionService {
         } else {
             printer.printLn("farewell.smthWentWrong", null);
         }
-
     }
 }
