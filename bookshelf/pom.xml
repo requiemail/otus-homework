@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.otus</groupId>
-	<artifactId>spring-boot-shelf</artifactId>
+	<artifactId>bookshelf</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-shelf</name>
+	<name>bookshelf</name>
 
 	<properties>
 		<java.version>11</java.version>
