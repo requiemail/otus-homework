@@ -9,10 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.otus</groupId>
-	<artifactId>homework</artifactId>
+	<artifactId>bookshelf</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>homework</name>
-	<description>Demo project for Spring Boot</description>
+	<name>bookshelf</name>
 
 	<properties>
 		<java.version>11</java.version>
