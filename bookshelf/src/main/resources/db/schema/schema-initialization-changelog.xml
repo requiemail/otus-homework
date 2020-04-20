@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="admin" id="1" >
+
+        <createTable tableName="books"  remarks="Книги">
+            <column name="book_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="book_name" type="VARCHAR(255)" remarks="Название книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ISBN" type="VARCHAR(255)" remarks="Код ISBN"/>
+            <column name="publication_year" type="VARCHAR(5)" remarks="Год издания"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="books"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="2" >
+
+        <createTable tableName="authors"  remarks="Авторы">
+            <column name="author_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="author_name" type="VARCHAR(255)" remarks="Имя автора">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="authors"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="3" >
+
+        <createTable tableName="genres"  remarks="Жанры">
+            <column name="genre_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="genre_name" type="VARCHAR(255)" remarks="Название жанра">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="genres"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="4" >
+
+        <createTable tableName="book_author_join"  remarks="Join-таблица книг и их авторов">
+            <column name="book_id" type="BIGINT" remarks="ID книги">
+                <constraints nullable="false"
+                             foreignKeyName="book_id_fk"
+                             referencedTableName="books"
+                             referencedColumnNames="book_id"
+                />
+            </column>
+            <column name="author_id" type="BIGINT" remarks="ID автора">
+                <constraints nullable="false"
+                             foreignKeyName="author_id_fk"
+                             referencedTableName="authors"
+                             referencedColumnNames="author_id"
+                />
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="books"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="5" >
+
+        <createTable tableName="book_genre_join"  remarks="Join-таблица книг и жанров">
+            <column name="book_id" type="BIGINT" remarks="ID книги">
+                <constraints nullable="false"
+                             foreignKeyName="book_id_fk"
+                             referencedTableName="books"
+                             referencedColumnNames="book_id"
+                />
+            </column>
+            <column name="genre_id" type="BIGINT" remarks="ID жанра">
+                <constraints nullable="false"
+                             foreignKeyName="genre_id_fk"
+                             referencedTableName="genres"
+                             referencedColumnNames="genre_id"
+                />
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="books"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
