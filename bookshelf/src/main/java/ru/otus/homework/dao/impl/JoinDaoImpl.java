@@ -39,5 +39,4 @@ public class JoinDaoImpl implements JoinDao {
                 jdbc.update("DELETE FROM book_author_join WHERE book_id = :book_id", params);
     }
 
-
 }

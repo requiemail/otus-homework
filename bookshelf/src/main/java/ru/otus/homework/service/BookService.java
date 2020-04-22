@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookService {
 
-    Book add(Book book);
+    long add(Book book);
     Book getById(long id);
     List<Book> getAll();
     int update(Book book);

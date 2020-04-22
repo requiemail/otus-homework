@@ -25,12 +25,14 @@ public class BookServiceImpl implements BookService {
     private final GenreService genreService;
 
     @Override
-    public Book add(Book book) {
+    public long add(Book book) {
 
         dao.insert(book);
-        book.setId(dao.findByName(book.getName()).getId());
+        book.setId(dao.insert(book));
 
-        return checkAuthorsAndGenresRelations(book);
+        checkAuthorsAndGenresRelations(book);
+
+        return book.getId();
 
     }
 

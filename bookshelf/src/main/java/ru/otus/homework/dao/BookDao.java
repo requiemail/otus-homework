@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookDao {
 
-    int insert(Book book);
+    long insert(Book book);
     Book findById(long id);
     Book findByName(String name);
     List<Book> findAll();

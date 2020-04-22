@@ -1,7 +1,10 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.mapper.AuthorRowMapper;
@@ -18,10 +21,14 @@ public class AuthorDaoImpl implements AuthorDao {
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public int insert(Author author) {
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("name", author.getName());
-        return jdbc.update("INSERT INTO authors (author_name) VALUES (:name)", params);
+    public long insert(Author author) {
+        MapSqlParameterSource params = new MapSqlParameterSource("name", author.getName());
+        KeyHolder kh = new GeneratedKeyHolder();
+        jdbc.update("INSERT INTO authors (author_name) VALUES (:name)",
+                params,
+                kh,
+                new String[]{"author_id"});
+        return kh.getKey().longValue();
     }
 
     @Override

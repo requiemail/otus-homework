@@ -1,12 +1,16 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.mapper.BookRowMapper;
 import ru.otus.homework.model.Book;
 
+import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +22,17 @@ public class BookDaoImpl implements BookDao {
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public int insert(Book book) {
-        Map<String, Object> params = new HashMap<>(4);
-        params.put("name", book.getName());
-        params.put("isbn", book.getIsbnCode());
-        params.put("year", book.getPublicationYear());
-        return jdbc.update("INSERT INTO books (book_name, isbn, publication_year) VALUES (:name, :isbn, :year)", params);
+    public long insert(Book book) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("name", book.getName());
+        params.addValue("isbn", book.getIsbnCode());
+        params.addValue("year", book.getPublicationYear());
+        KeyHolder kh = new GeneratedKeyHolder();
+        jdbc.update("INSERT INTO books (book_name, isbn, publication_year) VALUES (:name, :isbn, :year)",
+                params,
+                kh,
+                new String[]{"book_id"});
+        return kh.getKey().longValue();
     }
 
     @Override

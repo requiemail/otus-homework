@@ -1,7 +1,10 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.mapper.GenreRowMapper;
@@ -18,10 +21,14 @@ public class GenreDaoImpl implements GenreDao {
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public int insert(Genre genre) {
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("name", genre.getName());
-        return jdbc.update("INSERT INTO genres (genre_name) VALUES (:name)", params);
+    public long insert(Genre genre) {
+        MapSqlParameterSource params = new MapSqlParameterSource("name", genre.getName());
+        KeyHolder kh = new GeneratedKeyHolder();
+        jdbc.update("INSERT INTO genres (genre_name) VALUES (:name)",
+                params,
+                kh,
+                new String[]{"book_id"});
+        return kh.getKey().longValue();
     }
 
     @Override

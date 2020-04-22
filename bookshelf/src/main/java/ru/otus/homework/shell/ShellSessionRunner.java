@@ -38,7 +38,7 @@ public class ShellSessionRunner {
                 .authorList(createAuthorList())
                 .genreList(createGenreList())
                 .build();
-        System.out.println(bookService.add(book));
+        System.out.println(bookService.getById(bookService.add(book)));
     }
 
     @ShellMethod(value = "Show stored books")

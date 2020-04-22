@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AuthorDao {
 
-    int insert(Author author);
+    long insert(Author author);
     Author findById(long id);
     Author findByName(String name);
     List<Author> findAll();

@@ -15,7 +15,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorDao dao;
 
     @Override
-    public int add(Author author) {
+    public long add(Author author) {
         return dao.insert(author);
     }
 
