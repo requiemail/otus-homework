@@ -26,7 +26,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public long add(Book book) {
-
         book.setId(dao.insert(book));
 
         checkAuthorsAndGenresRelations(book);
