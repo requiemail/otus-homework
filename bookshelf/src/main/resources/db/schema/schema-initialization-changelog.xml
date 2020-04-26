@@ -4,9 +4,14 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="admin" id="1" >
+    <changeSet author="admin" id="e9bfa28b-ef2d-41f0-bf8b-267321500f86" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="books"/>
+            </not>
+        </preConditions>
 
-        <createTable tableName="books"  remarks="Книги">
+        <createTable tableName="books" remarks="Книги">
             <column name="book_id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -22,10 +27,15 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="2" >
+    <changeSet author="admin" id="c4edd1c5-f66b-4ca4-b5b9-e0cbcc878b20" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="authors"/>
+            </not>
+        </preConditions>
 
-        <createTable tableName="authors"  remarks="Авторы">
-            <column name="author_id" type="BIGINT" autoIncrement="true">
+        <createTable tableName="authors" remarks="Авторы">
+            <column name="author_id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="author_name" type="VARCHAR(255)" remarks="Имя автора">
@@ -38,10 +48,15 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="3" >
+    <changeSet author="admin" id="842c9c16-854c-4d7a-8996-4414ad76eaaf" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="genres"/>
+            </not>
+        </preConditions>
 
-        <createTable tableName="genres"  remarks="Жанры">
-            <column name="genre_id" type="BIGINT" autoIncrement="true">
+        <createTable tableName="genres" remarks="Жанры">
+            <column name="genre_id" type="BIGSERIAL" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="genre_name" type="VARCHAR(255)" remarks="Название жанра">
@@ -54,9 +69,14 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="4" >
+    <changeSet author="admin" id="9c022beb-32c2-459d-87ca-027809ef29ce" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="book_author_join"/>
+            </not>
+        </preConditions>
 
-        <createTable tableName="book_author_join"  remarks="Join-таблица книг и их авторов">
+        <createTable tableName="book_author_join" remarks="Join-таблица книг и их авторов">
             <column name="book_id" type="BIGINT" remarks="ID книги">
                 <constraints nullable="false"
                              foreignKeyName="book_id_fk"
@@ -78,9 +98,14 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="5" >
+    <changeSet author="admin" id="2f369274-a7ed-4806-8a82-142d0a7eb8ca" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="book_genre_join"/>
+            </not>
+        </preConditions>
 
-        <createTable tableName="book_genre_join"  remarks="Join-таблица книг и жанров">
+        <createTable tableName="book_genre_join" remarks="Join-таблица книг и жанров">
             <column name="book_id" type="BIGINT" remarks="ID книги">
                 <constraints nullable="false"
                              foreignKeyName="book_id_fk"
