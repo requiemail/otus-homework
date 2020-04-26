@@ -11,14 +11,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @Import(GenreDaoImpl.class)
-@DisplayName(value = "DAO жанров должен:")
+@DisplayName("DAO жанров должен:")
 class GenreDaoImplTest {
 
     @Autowired
     private GenreDaoImpl dao;
 
     @Test
-    @DisplayName(value = "возвращать из базы сохраненный жанр;")
+    @DisplayName("возвращать из базы сохраненный жанр;")
     void shouldReturnInsertedGenre() {
         long insertedGenre = dao.insert(Genre.builder().name("Test Genre").build());
         assertThat(dao.findById(insertedGenre).getName()).isEqualTo("Test Genre");
@@ -26,25 +26,25 @@ class GenreDaoImplTest {
     }
 
     @Test
-    @DisplayName(value = "возвращать из базы жанр по его ID;")
+    @DisplayName("возвращать из базы жанр по его ID;")
     void shouldReturnGenreById() {
         assertThat(dao.findById(1).getName()).isEqualTo("Fantasy");
     }
 
     @Test
-    @DisplayName(value = "возвращать из базы жанр по его имени;")
+    @DisplayName("возвращать из базы жанр по его имени;")
     void shouldReturnGenreByName() {
         assertThat(dao.findByName("Fantasy").getId()).isEqualTo(1);
     }
 
     @Test
-    @DisplayName(value = "возвращать из базы полный список жанров;")
+    @DisplayName("возвращать из базы полный список жанров;")
     void shouldReturnFullListOfStoredGenres() {
         assertThat(dao.findAll().size()).isGreaterThanOrEqualTo(7);
     }
 
     @Test
-    @DisplayName(value = "возвращать из базы список жанров, привязанных к определенной книге;")
+    @DisplayName("возвращать из базы список жанров, привязанных к определенной книге;")
     void shouldReturnListOfGenresBoundToBook() {
         assertThat(dao.findAllByBookId(4).size()).isEqualTo(4);
     }

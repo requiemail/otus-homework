@@ -19,19 +19,19 @@ class JoinDaoImplTest {
 
     @Test
     @DisplayName("возвращать ID созданной связи книги и автора;")
-    void shouldBindBookWithAuthors() {
+    void shouldBindBookWithAuthor() {
         assertThat(dao.bookAuthorBindingCreate(1, 1)).isGreaterThanOrEqualTo(8);
     }
 
     @Test
     @DisplayName("возвращать ID созданной связи книги и жанра;")
-    void bookGenreBindingCreate() {
+    void shouldBindBookWithGenre() {
         assertThat(dao.bookGenreBindingCreate(1, 1)).isGreaterThanOrEqualTo(12);
     }
 
     @Test
     @DisplayName("возвращать корректное количество удаленных связей;")
-    void bookBindingsDelete() {
+    void shouldReturnCountOfDeletedBindings() {
         assertThat(dao.bookBindingsDelete(2)).isEqualTo(5);
     }
 }
