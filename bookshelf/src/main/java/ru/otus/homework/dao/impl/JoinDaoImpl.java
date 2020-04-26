@@ -1,7 +1,10 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.JoinDao;
 
@@ -15,19 +18,29 @@ public class JoinDaoImpl implements JoinDao {
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public int bookAuthorBindingCreate(long bookId, long authorId) {
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("book_id", bookId);
-        params.put("author_id", authorId);
-        return jdbc.update("INSERT INTO book_author_join (book_id, author_id) VALUES (:book_id, :author_id)", params);
+    public long bookAuthorBindingCreate(long bookId, long authorId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("book_id", bookId);
+        params.addValue("author_id", authorId);
+        KeyHolder kh = new GeneratedKeyHolder();
+        jdbc.update("INSERT INTO book_author_join (book_id, author_id) VALUES (:book_id, :author_id)",
+                params,
+                kh,
+                new String[]{"book_author_join_id"});
+        return kh.getKey().longValue();
     }
 
     @Override
-    public int bookGenreBindingCreate(long bookId, long genreId) {
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("book_id", bookId);
-        params.put("genre_id", genreId);
-        return jdbc.update("INSERT INTO book_genre_join (book_id, genre_id) VALUES (:book_id, :genre_id)", params);
+    public long bookGenreBindingCreate(long bookId, long genreId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("book_id", bookId);
+        params.addValue("genre_id", genreId);
+        KeyHolder kh = new GeneratedKeyHolder();
+        jdbc.update("INSERT INTO book_genre_join (book_id, genre_id) VALUES (:book_id, :genre_id)",
+                params,
+                kh,
+                new String[]{"book_genre_join_id"});
+        return kh.getKey().longValue();
     }
 
 
