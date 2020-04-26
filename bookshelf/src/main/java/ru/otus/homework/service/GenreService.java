@@ -11,6 +11,5 @@ public interface GenreService {
     Genre getByName(String name);
     List<Genre> getAll();
     List<Genre> getAllByBookId(long id);
-    int update(Genre genre);
 
 }

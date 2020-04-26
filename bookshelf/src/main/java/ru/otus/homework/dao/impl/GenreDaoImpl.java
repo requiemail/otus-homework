@@ -27,7 +27,7 @@ public class GenreDaoImpl implements GenreDao {
         jdbc.update("INSERT INTO genres (genre_name) VALUES (:name)",
                 params,
                 kh,
-                new String[]{"book_id"});
+                new String[]{"genre_id"});
         return kh.getKey().longValue();
     }
 
@@ -63,13 +63,5 @@ public class GenreDaoImpl implements GenreDao {
                 new GenreRowMapper());
 
     }
-
-    @Override
-    public int update(Genre genre) {
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("id", genre.getId());
-        params.put("name", genre.getName());
-        return jdbc.update("UPDATE authors SET author_name = :name WHERE author_id = :id", params);
-   }
 
 }

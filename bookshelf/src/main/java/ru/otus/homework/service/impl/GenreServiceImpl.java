@@ -39,9 +39,4 @@ public class GenreServiceImpl implements GenreService {
         return dao.findAllByBookId(id);
     }
 
-    @Override
-    public int update(Genre genre) {
-        return dao.update(genre);
-    }
-
 }

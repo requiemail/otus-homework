@@ -63,12 +63,4 @@ public class AuthorDaoImpl implements AuthorDao {
                 new AuthorRowMapper());
     }
 
-    @Override
-    public int update(Author author) {
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("id", author.getId());
-        params.put("name", author.getName());
-        return jdbc.update("UPDATE authors SET author_name = :name WHERE author_id = :id", params);
-    }
-
 }
