@@ -8,6 +8,7 @@
     * genres: Show stored genres
     * update: Change something in stored book
 
+* Создание и изменение таблиц реализовано на Liquibase
 
 * ER-диаграмма
     * ![GitHub Logo](Bookshelf.png)
