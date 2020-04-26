@@ -10,4 +10,4 @@
 
 
 * ER-диаграмма
-![GitHub Logo](Bookshelf.png)
+    * ![GitHub Logo](Bookshelf.png)
