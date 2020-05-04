@@ -29,8 +29,10 @@ public class ShellSessionRunner {
     private final GenreService genreService;
     private final InputReader inputReader;
 
+    private static final List<String> YES_AND_NO_OPTIONS = Arrays.asList("Y", "N");
+
     @ShellMethod(value = "Input new book")
-    private void create() {
+    private String create() {
         Book book = Book.builder()
                 .name(inputReader.prompt("Enter book name"))
                 .isbnCode(inputReader.prompt("Enter ISBN code"))
@@ -38,61 +40,65 @@ public class ShellSessionRunner {
                 .authorList(createAuthorList())
                 .genreList(createGenreList())
                 .build();
-        System.out.println(bookService.getById(bookService.add(book)));
+        return bookService.getById(bookService.add(book)).toString();
     }
 
     @ShellMethod(value = "Show stored books")
-    private void books(@ShellOption(value = "Id of particular book to show", defaultValue = "-1") long id) {
+    private String books(@ShellOption(value = "Id of particular book to show", defaultValue = "-1") long id) {
         if (id > 0) {
-            System.out.println(bookService.getById(id));
+            return bookService.getById(id).toString();
         } else {
-            bookService.getAll().forEach(book -> System.out.println(book.toString()));
+            return bookService.getAll().stream().map(Book::toString).collect(Collectors.joining("\n"));
         }
     }
 
     @ShellMethod(value = "Show stored authors")
-    private void authors() {
-        authorService.getAll().forEach(author -> System.out.println(author.toString()));
+    private List<String> authors() {
+        return authorService.getAll().stream().map(Author::toString).collect(Collectors.toList());
     }
 
     @ShellMethod(value = "Show stored genres")
-    private void genres() {
-        genreService.getAll().forEach(genre -> System.out.println(genre.toString()));
+    private List<String> genres() {
+        return genreService.getAll().stream().map(Genre::toString).collect(Collectors.toList());
     }
 
     @ShellMethod(value = "Change something in stored book")
     private void update(@ShellOption(value = "Id of particular book") long id) {
+
         Book book = bookService.getById(id);
-        System.out.println(book);
         String currentOption;
 
-        currentOption = inputReader.promptWithOptions("Do we change the name?", "N", Arrays.asList("Y", "N"));
+        currentOption = inputReader.promptWithOptions(String.format("Do we change this book?\n%s", book), "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
             book.setName(inputReader.prompt("Enter book name"));
         }
 
-        currentOption = inputReader.promptWithOptions("Do we change the ISBN code?", "N", Arrays.asList("Y", "N"));
+        currentOption = inputReader.promptWithOptions("Do we change the name?", "N", YES_AND_NO_OPTIONS);
+        if ("Y".equals(currentOption)) {
+            book.setName(inputReader.prompt("Enter book name"));
+        }
+
+        currentOption = inputReader.promptWithOptions("Do we change the ISBN code?", "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
             book.setIsbnCode(inputReader.prompt("Enter ISBN code"));
         }
 
-        currentOption = inputReader.promptWithOptions("Do we change the publication year?", "N", Arrays.asList("Y", "N"));
+        currentOption = inputReader.promptWithOptions("Do we change the publication year?", "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
             book.setPublicationYear(inputReader.prompt("Enter publication year"));
         }
 
-        currentOption = inputReader.promptWithOptions("Do we change authors?", "N", Arrays.asList("Y", "N"));
+        currentOption = inputReader.promptWithOptions("Do we change authors?", "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
             book.setAuthorList(createAuthorList());
         }
 
-        currentOption = inputReader.promptWithOptions("Do we change genres?", "N", Arrays.asList("Y", "N"));
+        currentOption = inputReader.promptWithOptions("Do we change genres?", "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
             book.setGenreList(createGenreList());
         }
 
-        System.out.println(book);
-        currentOption = inputReader.promptWithOptions("Save?", "N", Arrays.asList("Y", "N"));
+        currentOption = inputReader.promptWithOptions(String.format("Save?\n%s", book), "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
             bookService.update(book);
         }
@@ -102,8 +108,8 @@ public class ShellSessionRunner {
 
     @ShellMethod(value = "Delete book by id")
     private void delete(@ShellOption(value = "Id of particular book") long id) {
-        System.out.println(bookService.getById(id));
-        String lastWarn = inputReader.promptWithOptions(String.format("Do you really want to delete book with id %d", id), "N", Arrays.asList("Y", "N"));
+        Book book = bookService.getById(id);
+        String lastWarn = inputReader.promptWithOptions(String.format("Do you really want to delete this book?\n%s", book), "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(lastWarn)) {
             bookService.delete(id);
         }
@@ -116,7 +122,7 @@ public class ShellSessionRunner {
         String currentOption;
         Map<Long, String> authorOptions;
         do {
-            currentOption = inputReader.promptWithOptions("Would you like to pick one of stored authors?", "N", Arrays.asList("Y", "N"));
+            currentOption = inputReader.promptWithOptions("Would you like to pick one of stored authors?", "N", YES_AND_NO_OPTIONS);
             if ("Y".equals(currentOption)) {
                 authorOptions = allAuthors.stream().collect(Collectors.toMap(Author::getId, Author::getName));
                 Long input = inputReader.selectFromList("Author:",
@@ -132,7 +138,7 @@ public class ShellSessionRunner {
                         .name(inputReader.prompt("Enter author's name"))
                         .build());
             }
-            currentOption = inputReader.promptWithOptions("Would you like to input another one author?", "N", Arrays.asList("Y", "N"));
+            currentOption = inputReader.promptWithOptions("Would you like to input another one author?", "N", YES_AND_NO_OPTIONS);
         } while ("Y".equals(currentOption));
         return authors;
     }
@@ -143,7 +149,7 @@ public class ShellSessionRunner {
         String currentOption;
         Map<Long, String> genreOptions;
         do {
-            currentOption = inputReader.promptWithOptions("Would you like to pick one of stored genres?", "N", Arrays.asList("Y", "N"));
+            currentOption = inputReader.promptWithOptions("Would you like to pick one of stored genres?", "N", YES_AND_NO_OPTIONS);
             if ("Y".equals(currentOption)) {
                 genreOptions = allGenres.stream().collect(Collectors.toMap(Genre::getId, Genre::getName));
                 Long input = inputReader.selectFromList("Genre:",
@@ -160,7 +166,7 @@ public class ShellSessionRunner {
                         .name(authorName)
                         .build());
             }
-            currentOption = inputReader.promptWithOptions("Would you like to input another one genre?", "N", Arrays.asList("Y", "N"));
+            currentOption = inputReader.promptWithOptions("Would you like to input another one genre?", "N", YES_AND_NO_OPTIONS);
         } while ("Y".equals(currentOption));
         return genres;
     }
