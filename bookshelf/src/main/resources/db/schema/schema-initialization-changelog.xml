@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="admin" id="e9bfa28b-ef2d-41f0-bf8b-267321500f86" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="books"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="books" remarks="Книги">
+            <column name="book_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="book_name" type="VARCHAR(255)" remarks="Название книги">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ISBN" type="VARCHAR(255)" remarks="Код ISBN"/>
+            <column name="publication_year" type="VARCHAR(5)" remarks="Год издания"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="books"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="c4edd1c5-f66b-4ca4-b5b9-e0cbcc878b20" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="authors"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="authors" remarks="Авторы">
+            <column name="author_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="author_name" type="VARCHAR(255)" remarks="Имя автора">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="authors"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="842c9c16-854c-4d7a-8996-4414ad76eaaf" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="genres"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="genres" remarks="Жанры">
+            <column name="genre_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="genre_name" type="VARCHAR(255)" remarks="Название жанра">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="genres"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="9c022beb-32c2-459d-87ca-027809ef29ce" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="book_author_join"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="book_author_join" remarks="Join-таблица книг и их авторов">
+            <column name="book_author_join_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="book_id" type="BIGINT" remarks="ID книги">
+                <constraints nullable="false"
+                             foreignKeyName="book_id_fk"
+                             referencedTableName="books"
+                             referencedColumnNames="book_id"
+                />
+            </column>
+            <column name="author_id" type="BIGINT" remarks="ID автора">
+                <constraints nullable="false"
+                             foreignKeyName="author_id_fk"
+                             referencedTableName="authors"
+                             referencedColumnNames="author_id"
+                />
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="books"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="2f369274-a7ed-4806-8a82-142d0a7eb8ca" context="dev, test">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="book_genre_join"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="book_genre_join" remarks="Join-таблица книг и жанров">
+            <column name="book_genre_join_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="book_id" type="BIGINT" remarks="ID книги">
+                <constraints nullable="false"
+                             foreignKeyName="book_id_fk"
+                             referencedTableName="books"
+                             referencedColumnNames="book_id"
+                />
+            </column>
+            <column name="genre_id" type="BIGINT" remarks="ID жанра">
+                <constraints nullable="false"
+                             foreignKeyName="genre_id_fk"
+                             referencedTableName="genres"
+                             referencedColumnNames="genre_id"
+                />
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="books"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
