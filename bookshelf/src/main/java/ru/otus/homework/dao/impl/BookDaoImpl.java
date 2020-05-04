@@ -1,16 +1,15 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.BookDao;
-import ru.otus.homework.mapper.BookRowMapper;
 import ru.otus.homework.model.Book;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import java.util.Map;
 public class BookDaoImpl implements BookDao {
 
     private final NamedParameterJdbcOperations jdbc;
+    private final RowMapper<Book> rowMapper;
 
     @Override
     public long insert(Book book) {
@@ -41,7 +41,7 @@ public class BookDaoImpl implements BookDao {
         params.put("id", id);
         return jdbc.queryForObject("SELECT book_id, book_name, isbn, publication_year FROM books WHERE book_id = :id",
                 params,
-                new BookRowMapper());
+                rowMapper);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class BookDaoImpl implements BookDao {
         params.put("name", name);
         return jdbc.queryForObject("SELECT book_id, book_name, isbn, publication_year FROM books WHERE book_name = :name",
                 params,
-                new BookRowMapper());
+                rowMapper);
     }
 
     @Override
     public List<Book> findAll() {
-        return jdbc.query("SELECT book_id, book_name, isbn, publication_year FROM books", new BookRowMapper());
+        return jdbc.query("SELECT book_id, book_name, isbn, publication_year FROM books", rowMapper);
     }
 
     @Override

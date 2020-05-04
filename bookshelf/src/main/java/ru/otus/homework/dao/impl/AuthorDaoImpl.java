@@ -1,13 +1,13 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.AuthorDao;
-import ru.otus.homework.mapper.AuthorRowMapper;
 import ru.otus.homework.model.Author;
 
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import java.util.Map;
 public class AuthorDaoImpl implements AuthorDao {
 
     private final NamedParameterJdbcOperations jdbc;
+    private final RowMapper<Author> rowMapper;
 
     @Override
     public long insert(Author author) {
@@ -37,7 +38,7 @@ public class AuthorDaoImpl implements AuthorDao {
         params.put("id", id);
         return jdbc.queryForObject("SELECT author_id, author_name FROM authors WHERE author_id = :id",
                 params,
-                new AuthorRowMapper());
+                rowMapper);
     }
 
     @Override
@@ -46,12 +47,12 @@ public class AuthorDaoImpl implements AuthorDao {
         params.put("name", name);
         return jdbc.queryForObject("SELECT author_id, author_name FROM authors WHERE author_name = :name",
                 params,
-                new AuthorRowMapper());
+                rowMapper);
     }
 
     @Override
     public List<Author> findAll() {
-        return jdbc.query("SELECT author_id, author_name FROM authors", new AuthorRowMapper());
+        return jdbc.query("SELECT author_id, author_name FROM authors", rowMapper);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class AuthorDaoImpl implements AuthorDao {
         params.put("id", id);
         return jdbc.query("SELECT a.author_id, a.author_name FROM book_author_join AS ba JOIN authors AS a ON ba.author_id = a.author_id WHERE ba.book_id = :id",
                 params,
-                new AuthorRowMapper());
+                rowMapper);
     }
 
 }

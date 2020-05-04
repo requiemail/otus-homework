@@ -1,13 +1,13 @@
 package ru.otus.homework.dao.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.GenreDao;
-import ru.otus.homework.mapper.GenreRowMapper;
 import ru.otus.homework.model.Genre;
 
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import java.util.Map;
 public class GenreDaoImpl implements GenreDao {
 
     private final NamedParameterJdbcOperations jdbc;
+    private final RowMapper<Genre> rowMapper;
 
     @Override
     public long insert(Genre genre) {
@@ -37,7 +38,7 @@ public class GenreDaoImpl implements GenreDao {
         params.put("id", id);
         return jdbc.queryForObject("SELECT genre_id, genre_name FROM genres WHERE genre_id = :id",
                 params,
-                new GenreRowMapper());
+                rowMapper);
     }
 
     @Override
@@ -46,12 +47,12 @@ public class GenreDaoImpl implements GenreDao {
         params.put("name", name);
         return jdbc.queryForObject("SELECT genre_id, genre_name FROM genres WHERE genre_name = :name",
                 params,
-                new GenreRowMapper());
+                rowMapper);
     }
 
     @Override
     public List<Genre> findAll() {
-        return jdbc.query("SELECT genre_id, genre_name FROM genres", new GenreRowMapper());
+        return jdbc.query("SELECT genre_id, genre_name FROM genres", rowMapper);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class GenreDaoImpl implements GenreDao {
         params.put("id", id);
         return jdbc.query("SELECT g.genre_id, g.genre_name FROM book_genre_join AS bg JOIN genres AS g ON bg.genre_id = g.genre_id WHERE bg.book_id = :id",
                 params,
-                new GenreRowMapper());
+                rowMapper);
 
     }
 

@@ -1,12 +1,13 @@
 package ru.otus.homework.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 import ru.otus.homework.model.Author;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Service
 public class AuthorRowMapper implements RowMapper<Author> {
 
     @Override
