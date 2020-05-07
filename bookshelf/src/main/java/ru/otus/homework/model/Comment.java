@@ -1,5 +1,6 @@
 package ru.otus.homework.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,19 +18,25 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "authors")
-public class Author {
+@Table(name = "comments")
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "author_id")
+    @Column(name = "comment_id")
     private long id;
-    @Column(name = "author_name")
-    private String name;
+    @Column(name = "comment_text")
+    private String commentText;
+    @Column(name = "comment_author")
+    private String commentAuthor;
+    @Column(name = "book_id")
+    private long bookID;
 
     @Override
     public String toString() {
-        return name;
+        return commentAuthor + ":\n\t" + commentText;
     }
+
+
 
 }
