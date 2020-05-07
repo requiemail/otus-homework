@@ -6,13 +6,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.homework.dao.impl.GenreDaoImpl;
+import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Genre;
+import ru.otus.homework.repository.impl.GenreRepositoryImpl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,56 +23,46 @@ import static org.mockito.BDDMockito.given;
 class GenreServiceImplTest {
 
     @Mock
-    private GenreDaoImpl dao;
+    private GenreRepositoryImpl repository;
 
     @InjectMocks
     private GenreServiceImpl service;
 
     @Test
-    @DisplayName("возвращать ID созданного жанра;")
-    void shouldReturnInsertedGenreId() {
+    @DisplayName("возвращать созданный жанр;")
+    void shouldReturnCreatedGenre() {
         Genre insertGenre = Genre.builder().name("Test Genre").build();
-        given(dao.insert(insertGenre)).willReturn(1L);
-        assertThat(service.add(insertGenre)).isEqualTo(1L);
+        given(repository.save(insertGenre)).willReturn(insertGenre);
+
+        assertThat(service.save(insertGenre)).extracting("name")
+                .isEqualTo("Test Genre");
     }
 
     @Test
     @DisplayName("возвращать жанр по ID;")
-    void getById() {
+    void shouldReturnGenreById() {
         Genre insertGenre = Genre.builder().id(1L).name("Test Genre").build();
-        given(dao.findById(insertGenre.getId())).willReturn(insertGenre);
+        given(repository.findById(insertGenre.getId())).willReturn(Optional.of(insertGenre));
         assertThat(service.getById(1L)).isEqualTo(insertGenre);
     }
 
     @Test
-    @DisplayName("возвращать жанр по названию;")
-    void getByName() {
-        Genre insertGenre = Genre.builder().id(1L).name("Test Genre").build();
-        given(dao.findByName(insertGenre.getName())).willReturn(insertGenre);
-        assertThat(service.getByName("Test Genre")).isEqualTo(insertGenre);
-    }
-
-    @Test
     @DisplayName("возвращать полный список жанров;")
-    void getAll() {
+    void shouldReturnAllGenres() {
         List<Genre> genres = Arrays.asList(
                 Genre.builder().id(1L).name("Test Genre 1").build(),
                 Genre.builder().id(2L).name("Test Genre 2").build(),
                 Genre.builder().id(3L).name("Test Genre 3").build()
         );
-        given(dao.findAll()).willReturn(genres);
+        given(repository.findAll()).willReturn(genres);
         assertThat(service.getAll()).isEqualTo(genres);
     }
 
     @Test
-    @DisplayName("возвращать список жанров по ID книги;")
-    void getAllByBookId() {
-        List<Genre> genres = Arrays.asList(
-                Genre.builder().id(1L).name("Test Genre 1").build(),
-                Genre.builder().id(2L).name("Test Genre 2").build(),
-                Genre.builder().id(3L).name("Test Genre 3").build()
-        );
-        given(dao.findAllByBookId(1L)).willReturn(genres);
-        assertThat(service.getAllByBookId(1L)).isEqualTo(genres);
+    @DisplayName("выбрасывать корректное исключение;")
+    void shouldThrowCorrectException() {
+        given(repository.findById(1L)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(1L)).isInstanceOf(NotFoundException.class).hasMessage("Genre with id 1 not found");
     }
+
 }

@@ -6,19 +6,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.homework.dao.BookDao;
-import ru.otus.homework.dao.JoinDao;
+import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
+import ru.otus.homework.model.Comment;
 import ru.otus.homework.model.Genre;
-import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.GenreService;
+import ru.otus.homework.repository.impl.BookRepositoryImpl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,42 +28,32 @@ import static org.mockito.BDDMockito.given;
 class BookServiceImplTest {
 
     @Mock
-    private BookDao dao;
-    @Mock
-    private JoinDao joinDao;
-
-    @Mock
-    private AuthorService authorService;
-    @Mock
-    private GenreService genreService;
+    private BookRepositoryImpl repository;
 
     @InjectMocks
     private BookServiceImpl service;
 
-
     @Test
-    @DisplayName("возвращать ID созданной книги;")
-    void shouldReturnIdOfNewBook() {
-
+    @DisplayName("возвращать созданную книгу;")
+    void shouldReturnCreatedBook() {
         Book testBook = Book.builder()
                 .name("Test Book")
-                .authorList(new ArrayList<>())
-                .genreList(new ArrayList<>())
+                .authorList(new HashSet<>())
+                .genreList(new HashSet<>())
                 .build();
-        given(dao.insert(testBook)).willReturn(1L);
-        assertThat(service.add(testBook)).isEqualTo(1L);
-
+        given(repository.save(testBook)).willReturn(testBook);
+        assertThat(service.save(testBook)).isEqualTo(testBook);
     }
 
     @Test
     @DisplayName("возвращать книгу по её ID со всеми вложенными авторами и жанрами;")
-    void getById() {
-        List<Genre> genres = Arrays.asList(
+    void shouldReturnBookById() {
+        Set<Genre> genres = Set.of(
                 Genre.builder().id(1L).name("Test Genre 1").build(),
                 Genre.builder().name("Test Genre 2").build(),
                 Genre.builder().name("Test Genre 3").build()
         );
-        List<Author> authors = Arrays.asList(
+        Set<Author> authors = Set.of(
                 Author.builder().id(1L).name("Test Author 1").build(),
                 Author.builder().name("Test Author 2").build(),
                 Author.builder().name("Test Author 3").build()
@@ -75,52 +67,43 @@ class BookServiceImplTest {
                 .authorList(authors)
                 .build();
 
-        given(dao.findById(1L)).willReturn(Book.builder()
+        given(repository.findById(1L)).willReturn(Optional.of(testBook));
+        assertThat(service.getById(1L)).isEqualTo(testBook);
+
+    }
+
+    @Test
+    @DisplayName("возвращать книгу по её ID со всеми комментариями;")
+    void shouldReturnBookByIdWithComments() {
+        Book testBook = Book.builder()
                 .id(1L)
                 .name("Test Book")
                 .isbnCode("111-1111-1111-11")
                 .publicationYear("2020")
-                .build());
-        given(authorService.getAllByBookId(1L)).willReturn(authors);
-        given(genreService.getAllByBookId(1L)).willReturn(genres);
+                .comments(Set.of(Comment.builder().id(1L).build()))
+                .build();
 
+        given(repository.findById(1L)).willReturn(Optional.of(testBook));
         assertThat(service.getById(1L)).isEqualTo(testBook);
 
     }
 
     @Test
     @DisplayName("возвращать список сохраненных книг;")
-    void getAll() {
+    void shouldReturnAllBooks() {
         List<Book> testBooks = Arrays.asList(
                 Book.builder().id(1L).name("Test Book 1").build(),
                 Book.builder().id(2L).name("Test Book 2").build(),
                 Book.builder().id(3L).name("Test Book 3").build()
         );
-        given(dao.findAll()).willReturn(testBooks);
-
+        given(repository.findAll()).willReturn(testBooks);
         assertThat(service.getAll()).isEqualTo(testBooks);
     }
 
     @Test
-    @DisplayName("возвращать правильное количество сохраненных книг;")
-    void update() {
-        Book testBook = Book.builder()
-                .id(1L)
-                .name("Test Book")
-                .authorList(new ArrayList<>())
-                .genreList(new ArrayList<>())
-                .build();
-        given(dao.update(testBook)).willReturn(1);
-
-        assertThat(service.update(testBook)).isEqualTo(1);
-
-    }
-
-    @Test
-    @DisplayName("возвращать правильное количество удаленных книг;")
-    void delete() {
-        given(dao.deleteById(1L)).willReturn(1);
-
-        assertThat(service.delete(1L)).isEqualTo(1);
+    @DisplayName("выбрасывать корректное исключение;")
+    void shouldThrowCorrectException() {
+        given(repository.findById(1L)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(1L)).isInstanceOf(NotFoundException.class).hasMessage("Book with id 1 not found");
     }
 }
