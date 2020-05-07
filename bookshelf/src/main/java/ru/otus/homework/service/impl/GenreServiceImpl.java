@@ -2,6 +2,7 @@ package ru.otus.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Genre;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.GenreService;
@@ -21,7 +22,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre getById(long id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Genre with id %d not found", id)));
     }
 
     @Override
