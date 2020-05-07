@@ -7,5 +7,6 @@
     <include file="/db/schema/schema-initialization-changelog.xml" />
     <include file="/db/schema/v.2-schema-initialization-changelog.xml" />
     <include file="/db/data/initial-data-changelog.xml" />
+    <include file="/db/data/v.2-initial-data-changelog.xml" />
 
 </databaseChangeLog>
