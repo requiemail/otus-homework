@@ -27,6 +27,10 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Сервис книг должен:")
 class BookServiceImplTest {
 
+    public static final long FIRST_ID = 1L;
+    public static final long SECOND_ID = 2L;
+    public static final long THIRD_ID = 3L;
+
     @Mock
     private BookRepositoryImpl repository;
 
@@ -49,17 +53,17 @@ class BookServiceImplTest {
     @DisplayName("возвращать книгу по её ID со всеми вложенными авторами и жанрами;")
     void shouldReturnBookById() {
         Set<Genre> genres = Set.of(
-                Genre.builder().id(1L).name("Test Genre 1").build(),
+                Genre.builder().id(FIRST_ID).name("Test Genre 1").build(),
                 Genre.builder().name("Test Genre 2").build(),
                 Genre.builder().name("Test Genre 3").build()
         );
         Set<Author> authors = Set.of(
-                Author.builder().id(1L).name("Test Author 1").build(),
+                Author.builder().id(FIRST_ID).name("Test Author 1").build(),
                 Author.builder().name("Test Author 2").build(),
                 Author.builder().name("Test Author 3").build()
         );
         Book testBook = Book.builder()
-                .id(1L)
+                .id(FIRST_ID)
                 .name("Test Book")
                 .isbnCode("111-1111-1111-11")
                 .publicationYear("2020")
@@ -67,8 +71,8 @@ class BookServiceImplTest {
                 .authorList(authors)
                 .build();
 
-        given(repository.findById(1L)).willReturn(Optional.of(testBook));
-        assertThat(service.getById(1L)).isEqualTo(testBook);
+        given(repository.findById(FIRST_ID)).willReturn(Optional.of(testBook));
+        assertThat(service.getById(FIRST_ID)).isEqualTo(testBook);
 
     }
 
@@ -76,15 +80,15 @@ class BookServiceImplTest {
     @DisplayName("возвращать книгу по её ID со всеми комментариями;")
     void shouldReturnBookByIdWithComments() {
         Book testBook = Book.builder()
-                .id(1L)
+                .id(FIRST_ID)
                 .name("Test Book")
                 .isbnCode("111-1111-1111-11")
                 .publicationYear("2020")
-                .comments(Set.of(Comment.builder().id(1L).build()))
+                .comments(Set.of(Comment.builder().id(FIRST_ID).build()))
                 .build();
 
-        given(repository.findById(1L)).willReturn(Optional.of(testBook));
-        assertThat(service.getById(1L)).isEqualTo(testBook);
+        given(repository.findById(FIRST_ID)).willReturn(Optional.of(testBook));
+        assertThat(service.getById(FIRST_ID)).isEqualTo(testBook);
 
     }
 
@@ -92,9 +96,9 @@ class BookServiceImplTest {
     @DisplayName("возвращать список сохраненных книг;")
     void shouldReturnAllBooks() {
         List<Book> testBooks = Arrays.asList(
-                Book.builder().id(1L).name("Test Book 1").build(),
-                Book.builder().id(2L).name("Test Book 2").build(),
-                Book.builder().id(3L).name("Test Book 3").build()
+                Book.builder().id(FIRST_ID).name("Test Book 1").build(),
+                Book.builder().id(SECOND_ID).name("Test Book 2").build(),
+                Book.builder().id(THIRD_ID).name("Test Book 3").build()
         );
         given(repository.findAll()).willReturn(testBooks);
         assertThat(service.getAll()).isEqualTo(testBooks);
@@ -103,7 +107,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("выбрасывать корректное исключение;")
     void shouldThrowCorrectException() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
-        assertThatThrownBy(() -> service.getById(1L)).isInstanceOf(NotFoundException.class).hasMessage("Book with id 1 not found");
+        given(repository.findById(FIRST_ID)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(FIRST_ID)).isInstanceOf(NotFoundException.class).hasMessage("Book with id 1 not found");
     }
 }

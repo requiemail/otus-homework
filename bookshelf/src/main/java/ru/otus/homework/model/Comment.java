@@ -30,7 +30,7 @@ public class Comment {
     @Column(name = "comment_author")
     private String commentAuthor;
     @Column(name = "book_id")
-    private long bookID;
+    private long bookId;
 
     @Override
     public String toString() {

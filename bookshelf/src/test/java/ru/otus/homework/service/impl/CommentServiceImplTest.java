@@ -22,6 +22,10 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Сервис комментариев должен:")
 class CommentServiceImplTest {
 
+    public static final long FIRST_ID = 1L;
+    public static final long SECOND_ID = 2L;
+    public static final long THIRD_ID = 3L;
+
     @Mock
     private CommentRepositoryImpl repository;
 
@@ -41,18 +45,18 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("возвращать комментарий по ID;")
     void shouldReturnCommentById() {
-        Comment insertComment = Comment.builder().id(1L).commentText("Test Comment").build();
+        Comment insertComment = Comment.builder().id(FIRST_ID).commentText("Test Comment").build();
         given(repository.findById(insertComment.getId())).willReturn(Optional.of(insertComment));
-        assertThat(service.getById(1L)).isEqualTo(insertComment);
+        assertThat(service.getById(FIRST_ID)).isEqualTo(insertComment);
     }
 
     @Test
     @DisplayName("возвращать полный список комментариев;")
     void shouldReturnAllComments() {
         List<Comment> comments = Arrays.asList(
-                Comment.builder().id(1L).commentText("Test Comment 1").build(),
-                Comment.builder().id(2L).commentText("Test Comment 2").build(),
-                Comment.builder().id(3L).commentText("Test Comment 3").build()
+                Comment.builder().id(FIRST_ID).commentText("Test Comment 1").build(),
+                Comment.builder().id(SECOND_ID).commentText("Test Comment 2").build(),
+                Comment.builder().id(THIRD_ID).commentText("Test Comment 3").build()
         );
         given(repository.findAll()).willReturn(comments);
         assertThat(service.getAll()).isEqualTo(comments);
@@ -62,19 +66,19 @@ class CommentServiceImplTest {
     @DisplayName("возвращать полный список комментариев к определенной книге;")
     void shouldReturnCorrectCommentsByBookId() {
         List<Comment> comments = Arrays.asList(
-                Comment.builder().id(1L).commentText("Test Comment 1").bookID(1L).build(),
-                Comment.builder().id(2L).commentText("Test Comment 2").bookID(1L).build(),
-                Comment.builder().id(3L).commentText("Test Comment 3").bookID(1L).build()
+                Comment.builder().id(FIRST_ID).commentText("Test Comment 1").bookId(FIRST_ID).build(),
+                Comment.builder().id(SECOND_ID).commentText("Test Comment 2").bookId(FIRST_ID).build(),
+                Comment.builder().id(THIRD_ID).commentText("Test Comment 3").bookId(FIRST_ID).build()
         );
-        given(repository.findAllByBookId(1L)).willReturn(comments);
-        assertThat(service.getAllByBookId(1L)).isEqualTo(comments);
+        given(repository.findAllByBookId(FIRST_ID)).willReturn(comments);
+        assertThat(service.getAllByBookId(FIRST_ID)).isEqualTo(comments);
     }
 
     @Test
     @DisplayName("выбрасывать корректное исключение;")
     void shouldThrowCorrectException() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
-        assertThatThrownBy(() -> service.getById(1L)).isInstanceOf(NotFoundException.class).hasMessage("Comment with id 1 not found");
+        given(repository.findById(FIRST_ID)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(FIRST_ID)).isInstanceOf(NotFoundException.class).hasMessage("Comment with id 1 not found");
     }
 
 }

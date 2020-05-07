@@ -22,6 +22,10 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Сервис жанров должен:")
 class GenreServiceImplTest {
 
+    public static final long FIRST_ID = 1L;
+    public static final long SECOND_ID = 2L;
+    public static final long THIRD_ID = 3L;
+
     @Mock
     private GenreRepositoryImpl repository;
 
@@ -41,18 +45,18 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("возвращать жанр по ID;")
     void shouldReturnGenreById() {
-        Genre insertGenre = Genre.builder().id(1L).name("Test Genre").build();
+        Genre insertGenre = Genre.builder().id(FIRST_ID).name("Test Genre").build();
         given(repository.findById(insertGenre.getId())).willReturn(Optional.of(insertGenre));
-        assertThat(service.getById(1L)).isEqualTo(insertGenre);
+        assertThat(service.getById(FIRST_ID)).isEqualTo(insertGenre);
     }
 
     @Test
     @DisplayName("возвращать полный список жанров;")
     void shouldReturnAllGenres() {
         List<Genre> genres = Arrays.asList(
-                Genre.builder().id(1L).name("Test Genre 1").build(),
-                Genre.builder().id(2L).name("Test Genre 2").build(),
-                Genre.builder().id(3L).name("Test Genre 3").build()
+                Genre.builder().id(FIRST_ID).name("Test Genre 1").build(),
+                Genre.builder().id(SECOND_ID).name("Test Genre 2").build(),
+                Genre.builder().id(THIRD_ID).name("Test Genre 3").build()
         );
         given(repository.findAll()).willReturn(genres);
         assertThat(service.getAll()).isEqualTo(genres);
@@ -61,8 +65,8 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("выбрасывать корректное исключение;")
     void shouldThrowCorrectException() {
-        given(repository.findById(1L)).willReturn(Optional.empty());
-        assertThatThrownBy(() -> service.getById(1L)).isInstanceOf(NotFoundException.class).hasMessage("Genre with id 1 not found");
+        given(repository.findById(FIRST_ID)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(FIRST_ID)).isInstanceOf(NotFoundException.class).hasMessage("Genre with id 1 not found");
     }
 
 }
