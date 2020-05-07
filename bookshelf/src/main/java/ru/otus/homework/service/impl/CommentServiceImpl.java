@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Comment;
-import ru.otus.homework.model.Genre;
 import ru.otus.homework.repository.impl.CommentRepositoryImpl;
 import ru.otus.homework.service.CommentService;
 
