@@ -137,7 +137,7 @@ public class ShellSessionRunner {
                 "Please enter one of the [] values",
                 bookOptions);
         Comment.CommentBuilder commentBuilder = Comment.builder()
-                .bookID(bookId);
+                .bookId(bookId);
 
         String commentAuthor = inputReader.prompt("What is your name?");
         String commentText;
