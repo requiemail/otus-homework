@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Comment;
-import ru.otus.homework.repository.impl.CommentRepositoryImpl;
+import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.service.CommentService;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepositoryImpl repository;
+    private final CommentRepository repository;
 
     @Override
     public Comment save(Comment comment) {
