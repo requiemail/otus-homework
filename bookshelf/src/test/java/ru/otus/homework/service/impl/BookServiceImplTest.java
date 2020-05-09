@@ -11,7 +11,7 @@ import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Comment;
 import ru.otus.homework.model.Genre;
-import ru.otus.homework.repository.impl.BookRepositoryImpl;
+import ru.otus.homework.repository.BookRepository;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +32,7 @@ class BookServiceImplTest {
     public static final long THIRD_ID = 3L;
 
     @Mock
-    private BookRepositoryImpl repository;
+    private BookRepository repository;
 
     @InjectMocks
     private BookServiceImpl service;

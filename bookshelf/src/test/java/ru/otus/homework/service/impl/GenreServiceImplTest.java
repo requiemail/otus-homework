@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Genre;
-import ru.otus.homework.repository.impl.GenreRepositoryImpl;
+import ru.otus.homework.repository.GenreRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +27,7 @@ class GenreServiceImplTest {
     public static final long THIRD_ID = 3L;
 
     @Mock
-    private GenreRepositoryImpl repository;
+    private GenreRepository repository;
 
     @InjectMocks
     private GenreServiceImpl service;

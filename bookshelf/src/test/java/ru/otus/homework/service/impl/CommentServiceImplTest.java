@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Comment;
-import ru.otus.homework.repository.impl.CommentRepositoryImpl;
+import ru.otus.homework.repository.CommentRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +27,7 @@ class CommentServiceImplTest {
     public static final long THIRD_ID = 3L;
 
     @Mock
-    private CommentRepositoryImpl repository;
+    private CommentRepository repository;
 
     @InjectMocks
     private CommentServiceImpl service;

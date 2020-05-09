@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Author;
-import ru.otus.homework.repository.impl.AuthorRepositoryImpl;
+import ru.otus.homework.repository.AuthorRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ class AuthorServiceImplTest {
     public static final long THIRD_ID = 3L;
 
     @Mock
-    private AuthorRepositoryImpl repository;
+    private AuthorRepository repository;
 
     @InjectMocks
     private AuthorServiceImpl service;
