@@ -21,6 +21,7 @@ public class BookRepositoryImpl implements BookRepository {
     private EntityManager em;
 
     @Override
+    @Transactional
     public Book save(Book book) {
         if (book.getId() == 0) {
             em.persist(book);

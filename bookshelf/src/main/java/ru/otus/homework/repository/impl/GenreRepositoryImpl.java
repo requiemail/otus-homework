@@ -18,6 +18,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     private EntityManager em;
 
     @Override
+    @Transactional
     public Genre save(Genre genre) {
         if (genre.getId() == 0) {
             em.persist(genre);

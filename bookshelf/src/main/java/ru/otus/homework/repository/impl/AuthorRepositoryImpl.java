@@ -1,6 +1,7 @@
 package ru.otus.homework.repository.impl;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.repository.AuthorRepository;
 
@@ -17,6 +18,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     private EntityManager em;
 
     @Override
+    @Transactional
     public Author save(Author author) {
         if (author.getId() == 0) {
             em.persist(author);
