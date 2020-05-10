@@ -51,7 +51,13 @@ public class ShellSessionRunner {
     @ShellMethod(value = "Show stored books")
     private String books(@ShellOption(value = "Id of particular book to show", defaultValue = "-1") long id) {
         if (id > 0) {
-            return bookService.getByIdWithComments(id).toStringWithComments();
+            Book book = bookService.getByIdWithComments(id);
+            return book.toString() +
+                    "\nComments:\n" +
+                    book.getComments()
+                            .stream()
+                            .map(Comment::toString)
+                            .collect(Collectors.joining("\n"));
         } else {
             return bookService.getAll().stream().map(Book::toString).collect(Collectors.joining("\n"));
         }
@@ -122,7 +128,15 @@ public class ShellSessionRunner {
     @ShellMethod(value = "Delete book by id")
     private void delete(@ShellOption(value = "Id of particular book") long id) {
         Book book = bookService.getByIdWithComments(id);
-        String lastWarn = inputReader.promptWithOptions(String.format("Do you really want to delete this book with its comments?\n%s", book.toStringWithComments()), "N", YES_AND_NO_OPTIONS);
+
+        String bookWithComments = book.toString() +
+                "\nComments:\n" +
+                book.getComments()
+                        .stream()
+                        .map(Comment::toString)
+                        .collect(Collectors.joining("\n"));
+
+        String lastWarn = inputReader.promptWithOptions(String.format("Do you really want to delete this book with its comments?\n%s", bookWithComments), "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(lastWarn)) {
             bookService.delete(book);
         }

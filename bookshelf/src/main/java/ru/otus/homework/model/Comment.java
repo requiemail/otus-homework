@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 
 @Builder
 @Data
+@ToString(exclude = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,10 +31,5 @@ public class Comment {
     private String commentText;
     @Column(name = "comment_author")
     private String commentAuthor;
-
-    @Override
-    public String toString() {
-        return commentAuthor + ":\n\t" + commentText;
-    }
 
 }

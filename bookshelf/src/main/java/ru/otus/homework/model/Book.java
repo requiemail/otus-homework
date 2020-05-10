@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,10 +22,10 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Builder
 @Data
+@ToString(exclude = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -70,23 +71,4 @@ public class Book {
     @JoinColumn(name = "book_id")
     private Set<Comment> comments;
 
-    @Override
-    public String toString() {
-        return "Book id:" + id +
-                ", name:'" + name + '\'' +
-                ", ISBN: " + isbnCode +
-                ", published in " + publicationYear +
-                ", authors: " + authorList.stream().map(Author::toString).collect(Collectors.joining(", ")) +
-                ", genres: " + genreList.stream().map(Genre::toString).collect(Collectors.joining(", "));
-    }
-
-    public String toStringWithComments() {
-        return "Book id:" + id +
-                ", name:'" + name + '\'' +
-                ", ISBN: " + isbnCode +
-                ", published in " + publicationYear +
-                ", authors: " + authorList.stream().map(Author::toString).collect(Collectors.joining(", ")) +
-                ", genres: " + genreList.stream().map(Genre::toString).collect(Collectors.joining(", ")) +
-                "\nComments:\n" + comments.stream().map(Comment::toString).collect(Collectors.joining("\n"));
-    }
 }
