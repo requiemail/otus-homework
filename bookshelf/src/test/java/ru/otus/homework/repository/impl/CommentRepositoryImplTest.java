@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Comment;
 
@@ -34,7 +35,8 @@ class CommentRepositoryImplTest {
                 .build();
         Book newBook = Book.builder().name("Test Book").comment(newComment).build();
         em.persist(newBook);
-        assertThat(repository.findById(newComment.getId()).get()).isEqualTo(newComment);
+        long persistedCommentId = newBook.getComments().stream().findFirst().get().getId();
+        assertThat(repository.findById(persistedCommentId).get()).isEqualTo(newComment);
     }
 
     @DisplayName("возвращать список всех комментариев;")
