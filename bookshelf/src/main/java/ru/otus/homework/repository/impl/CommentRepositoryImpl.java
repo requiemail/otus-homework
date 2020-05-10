@@ -29,11 +29,4 @@ public class CommentRepositoryImpl implements CommentRepository {
         return query.getResultList();
     }
 
-    @Override
-    public List<Comment> findAllByBookId(long id) {
-        TypedQuery<Comment> query = em.createQuery("from Comment where book_id = :id", Comment.class);
-        query.setParameter("id", id);
-        return query.getResultList();
-    }
-
 }

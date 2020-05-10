@@ -9,6 +9,4 @@ public interface CommentService {
     Comment getById(long id);
     List<Comment> getAll();
 
-
-    List<Comment> getAllByBookId(long id);
 }

@@ -9,5 +9,5 @@ public interface CommentRepository {
 
     Optional<Comment> findById(long id);
     List<Comment> findAll();
-    List<Comment> findAllByBookId(long id);
+
 }

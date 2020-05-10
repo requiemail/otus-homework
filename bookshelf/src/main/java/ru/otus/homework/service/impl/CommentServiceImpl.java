@@ -25,8 +25,4 @@ public class CommentServiceImpl implements CommentService {
         return repository.findAll();
     }
 
-    @Override
-    public List<Comment> getAllByBookId(long id) {
-        return repository.findAllByBookId(id);
-    }
 }
