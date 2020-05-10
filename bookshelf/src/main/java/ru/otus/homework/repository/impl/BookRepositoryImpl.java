@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Transactional
 @Repository
 public class BookRepositoryImpl implements BookRepository {
 
@@ -43,6 +42,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
+    @Transactional
     public void delete(Book book) {
         book = em.merge(book);
         em.remove(book);
@@ -55,6 +55,5 @@ public class BookRepositoryImpl implements BookRepository {
         properties.put("javax.persistence.fetchgraph", entityGraph);
         return Optional.ofNullable(em.find(Book.class, id, properties));
     }
-
 
 }

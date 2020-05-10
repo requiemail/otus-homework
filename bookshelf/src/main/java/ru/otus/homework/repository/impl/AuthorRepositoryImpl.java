@@ -1,7 +1,6 @@
 package ru.otus.homework.repository.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.repository.AuthorRepository;
 
@@ -11,7 +10,6 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @Repository
 public class AuthorRepositoryImpl implements AuthorRepository {
 
