@@ -136,8 +136,7 @@ public class ShellSessionRunner {
         Long bookId = inputReader.selectFromList("Books:",
                 "Please enter one of the [] values",
                 bookOptions);
-        Comment.CommentBuilder commentBuilder = Comment.builder()
-                .bookId(bookId);
+        Book book = bookService.getByIdWithComments(bookId);
 
         String commentAuthor = inputReader.prompt("What is your name?");
         String commentText;
@@ -145,11 +144,15 @@ public class ShellSessionRunner {
             commentText = inputReader.prompt("Please, enter the comment");
         } while (commentText.equals(""));
 
-        commentBuilder
+        Comment newComment = Comment.builder()
                 .commentAuthor(commentAuthor.equals("") ? "anonymous" : commentAuthor)
-                .commentText(commentText);
+                .commentText(commentText)
+                .build();
 
-        return commentService.save(commentBuilder.build()).toString();
+        book.getComments().add(newComment);
+        bookService.save(book);
+
+        return newComment.toString();
 
     }
 

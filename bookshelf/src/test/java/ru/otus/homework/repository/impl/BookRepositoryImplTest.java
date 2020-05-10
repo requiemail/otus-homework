@@ -63,14 +63,12 @@ class BookRepositoryImplTest {
     @DisplayName("возвращать книгу по ID с комментариями;")
     @Test
     void shouldReturnBookByIdWithComments() {
-        Book newBook = Book.builder().name("Test Book").build();
-        em.persist(newBook);
         Comment newComment = Comment.builder()
                 .commentAuthor("Test name")
                 .commentText("Test Comment")
-                .bookId(newBook.getId())
                 .build();
-        em.persist(newComment);
+        Book newBook = Book.builder().name("Test Book").comment(newComment).build();
+        em.persist(newBook);
         assertThat(repository.findByIdWithComments(newBook.getId()).get()).isEqualTo(newBook);
     }
 }
