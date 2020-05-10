@@ -70,7 +70,7 @@ public class ShellSessionRunner {
     @ShellMethod(value = "Show comments")
     private String comments(@ShellOption(value = "Id of particular book to show comments for", defaultValue = "-1") long id) {
         if (id > 0) {
-            return commentService.getAllByBookId(id).stream().map(Comment::toString).collect(Collectors.joining("\n"));
+            return bookService.getByIdWithComments(id).getComments().stream().map(Comment::toString).collect(Collectors.joining("\n"));
         } else {
             return commentService.getAll().stream().map(Comment::toString).collect(Collectors.joining("\n"));
         }
