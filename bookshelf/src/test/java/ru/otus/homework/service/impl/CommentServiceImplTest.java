@@ -33,16 +33,6 @@ class CommentServiceImplTest {
     private CommentServiceImpl service;
 
     @Test
-    @DisplayName("возвращать созданный комментарий;")
-    void shouldReturnCreatedComment() {
-        Comment insertComment = Comment.builder().commentAuthor("Test name").commentText("Test Comment").build();
-        given(repository.save(insertComment)).willReturn(insertComment);
-
-        assertThat(service.save(insertComment)).extracting("commentText", "commentAuthor")
-                .contains("Test Comment", "Test name");
-    }
-
-    @Test
     @DisplayName("возвращать комментарий по ID;")
     void shouldReturnCommentById() {
         Comment insertComment = Comment.builder().id(FIRST_ID).commentText("Test Comment").build();
@@ -60,18 +50,6 @@ class CommentServiceImplTest {
         );
         given(repository.findAll()).willReturn(comments);
         assertThat(service.getAll()).isEqualTo(comments);
-    }
-
-    @Test
-    @DisplayName("возвращать полный список комментариев к определенной книге;")
-    void shouldReturnCorrectCommentsByBookId() {
-        List<Comment> comments = Arrays.asList(
-                Comment.builder().id(FIRST_ID).commentText("Test Comment 1").bookId(FIRST_ID).build(),
-                Comment.builder().id(SECOND_ID).commentText("Test Comment 2").bookId(FIRST_ID).build(),
-                Comment.builder().id(THIRD_ID).commentText("Test Comment 3").bookId(FIRST_ID).build()
-        );
-        given(repository.findAllByBookId(FIRST_ID)).willReturn(comments);
-        assertThat(service.getAllByBookId(FIRST_ID)).isEqualTo(comments);
     }
 
     @Test

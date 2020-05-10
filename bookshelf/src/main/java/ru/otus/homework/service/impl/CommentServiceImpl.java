@@ -16,11 +16,6 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository repository;
 
     @Override
-    public Comment save(Comment comment) {
-        return repository.save(comment);
-    }
-
-    @Override
     public Comment getById(long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Comment with id %d not found", id)));
     }

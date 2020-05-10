@@ -19,16 +19,6 @@ public class CommentRepositoryImpl implements CommentRepository {
     private EntityManager em;
 
     @Override
-    public Comment save(Comment comment) {
-        if (comment.getId() == 0) {
-            em.persist(comment);
-            return comment;
-        } else {
-            return em.merge(comment);
-        }
-    }
-
-    @Override
     public Optional<Comment> findById(long id) {
         return Optional.ofNullable(em.find(Comment.class, id));
     }

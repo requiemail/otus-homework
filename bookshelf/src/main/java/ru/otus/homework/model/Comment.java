@@ -29,14 +29,10 @@ public class Comment {
     private String commentText;
     @Column(name = "comment_author")
     private String commentAuthor;
-    @Column(name = "book_id")
-    private long bookId;
 
     @Override
     public String toString() {
         return commentAuthor + ":\n\t" + commentText;
     }
-
-
 
 }
