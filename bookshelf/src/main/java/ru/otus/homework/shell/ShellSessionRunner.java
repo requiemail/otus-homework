@@ -52,7 +52,9 @@ public class ShellSessionRunner {
     private String books(@ShellOption(value = "Id of particular book to show", defaultValue = "-1") long id) {
         if (id > 0) {
             Book book = bookService.getByIdWithComments(id);
+//            Book book = bookService.getById(id);
             return book.toString() +
+//                    "\nComments:\n" ;
                     "\nComments:\n" +
                     book.getComments()
                             .stream()

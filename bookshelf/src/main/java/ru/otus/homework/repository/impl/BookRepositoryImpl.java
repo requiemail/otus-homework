@@ -5,13 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.repository.BookRepository;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -51,10 +48,9 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Book> findByIdWithComments(long id) {
-        EntityGraph<?> entityGraph = em.getEntityGraph("books-entity-graph");
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.fetchgraph", entityGraph);
-        return Optional.ofNullable(em.find(Book.class, id, properties));
+        TypedQuery<Book> query = em.createQuery("select b from Book b left join fetch b.comments left join fetch b.genreList left join fetch b.authorList where b.id = :id", Book.class);
+        query.setParameter("id", id);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
 }
