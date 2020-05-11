@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Comment;
+import ru.otus.homework.model.Genre;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,7 +70,13 @@ class BookRepositoryImplTest {
                 .commentAuthor("Test name")
                 .commentText("Test Comment")
                 .build();
-        Book newBook = Book.builder().name("Test Book").comment(newComment).build();
+        Book newBook = Book.builder()
+                .name("Test Book")
+                .isbnCode("111-1111-1111-11")
+                .publicationYear("2020")
+                .authorList(Set.of(Author.builder().id(1L).name("Test Author 1").build()))
+                .genreList(Set.of(Genre.builder().id(1L).name("Test Genre 1").build()))
+                .comment(newComment).build();
         em.persist(newBook);
         assertThat(repository.findByIdWithComments(newBook.getId()).get()).isEqualTo(newBook);
     }

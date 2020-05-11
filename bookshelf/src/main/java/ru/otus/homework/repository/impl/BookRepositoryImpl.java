@@ -48,7 +48,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Book> findByIdWithComments(long id) {
-        TypedQuery<Book> query = em.createQuery("select b from Book b left join fetch b.comments left join fetch b.genreList left join fetch b.authorList where b.id = :id", Book.class);
+        TypedQuery<Book> query = em.createQuery("select b from Book b left join fetch b.comments where b.id = :id", Book.class);
         query.setParameter("id", id);
         return Optional.ofNullable(query.getSingleResult());
     }

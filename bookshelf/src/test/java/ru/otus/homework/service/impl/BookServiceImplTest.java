@@ -90,6 +90,8 @@ class BookServiceImplTest {
                 .name("Test Book")
                 .isbnCode("111-1111-1111-11")
                 .publicationYear("2020")
+                .authorList(Set.of(Author.builder().id(FIRST_ID).name("Test Author 1").build()))
+                .genreList(Set.of(Genre.builder().id(FIRST_ID).name("Test Genre 1").build()))
                 .comments(Set.of(Comment.builder().id(FIRST_ID).build()))
                 .build();
 
