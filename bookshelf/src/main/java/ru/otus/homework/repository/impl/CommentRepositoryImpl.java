@@ -1,7 +1,6 @@
 package ru.otus.homework.repository.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.model.Comment;
 import ru.otus.homework.repository.CommentRepository;
 
