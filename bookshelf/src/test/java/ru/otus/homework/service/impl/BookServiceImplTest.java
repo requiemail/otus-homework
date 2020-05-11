@@ -12,6 +12,8 @@ import ru.otus.homework.model.Book;
 import ru.otus.homework.model.Comment;
 import ru.otus.homework.model.Genre;
 import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.service.AuthorService;
+import ru.otus.homework.service.GenreService;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,6 +35,10 @@ class BookServiceImplTest {
 
     @Mock
     private BookRepository repository;
+    @Mock
+    private AuthorService authorService;
+    @Mock
+    private GenreService genreService;
 
     @InjectMocks
     private BookServiceImpl service;
@@ -42,8 +48,8 @@ class BookServiceImplTest {
     void shouldReturnCreatedBook() {
         Book testBook = Book.builder()
                 .name("Test Book")
-                .authorList(new HashSet<>())
-                .genreList(new HashSet<>())
+                .authorList(Set.of(Author.builder().id(FIRST_ID).name("Test Author 1").build()))
+                .genreList(Set.of(Genre.builder().id(FIRST_ID).name("Test Genre 1").build()))
                 .build();
         given(repository.save(testBook)).willReturn(testBook);
         assertThat(service.save(testBook)).isEqualTo(testBook);
