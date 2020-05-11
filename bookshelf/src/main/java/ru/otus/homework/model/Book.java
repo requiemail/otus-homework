@@ -57,8 +57,7 @@ public class Book {
     private Set<Genre> genreList;
 
     @Singular
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "book_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "book")
     private Set<Comment> comments;
 
 }
