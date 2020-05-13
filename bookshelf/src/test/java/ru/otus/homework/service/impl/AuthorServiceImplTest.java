@@ -6,71 +6,66 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.homework.dao.impl.AuthorDaoImpl;
+import ru.otus.homework.error.NotFoundException;
 import ru.otus.homework.model.Author;
+import ru.otus.homework.repository.AuthorRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Сервис авторов должен:")
 class AuthorServiceImplTest {
+    
+    public static final long FIRST_ID = 1L;
+    public static final long SECOND_ID = 2L;
+    public static final long THIRD_ID = 3L;
 
     @Mock
-    private AuthorDaoImpl dao;
+    private AuthorRepository repository;
 
     @InjectMocks
     private AuthorServiceImpl service;
 
     @Test
-    @DisplayName("возвращать ID созданного автора;")
-    void shouldReturnInsertedAuthorId() {
+    @DisplayName("возвращать созданного автора;")
+    void shouldReturnCreatedAuthor() {
         Author insertAuthor = Author.builder().name("Test Author").build();
-        given(dao.insert(insertAuthor)).willReturn(1L);
-        assertThat(service.add(insertAuthor)).isEqualTo(1L);
+        given(repository.save(insertAuthor)).willReturn(insertAuthor);
+
+        assertThat(service.save(insertAuthor)).extracting("name")
+                .isEqualTo("Test Author");
     }
 
     @Test
     @DisplayName("возвращать автора по ID;")
-    void getById() {
-        Author insertAuthor = Author.builder().id(1L).name("Test Author").build();
-        given(dao.findById(insertAuthor.getId())).willReturn(insertAuthor);
-        assertThat(service.getById(1L)).isEqualTo(insertAuthor);
-    }
-
-    @Test
-    @DisplayName("возвращать автора по названию;")
-    void getByName() {
-        Author insertAuthor = Author.builder().id(1L).name("Test Author").build();
-        given(dao.findByName(insertAuthor.getName())).willReturn(insertAuthor);
-        assertThat(service.getByName("Test Author")).isEqualTo(insertAuthor);
+    void shouldReturnAuthorById() {
+        Author insertAuthor = Author.builder().id(FIRST_ID).name("Test Author").build();
+        given(repository.findById(insertAuthor.getId())).willReturn(Optional.of(insertAuthor));
+        assertThat(service.getById(FIRST_ID)).isEqualTo(insertAuthor);
     }
 
     @Test
     @DisplayName("возвращать полный список авторов;")
-    void getAll() {
+    void shouldReturnAllAuthors() {
         List<Author> authors = Arrays.asList(
-                Author.builder().id(1L).name("Test Author 1").build(),
-                Author.builder().id(2L).name("Test Author 2").build(),
-                Author.builder().id(3L).name("Test Author 3").build()
+                Author.builder().id(FIRST_ID).name("Test Author 1").build(),
+                Author.builder().id(SECOND_ID).name("Test Author 2").build(),
+                Author.builder().id(THIRD_ID).name("Test Author 3").build()
         );
-        given(dao.findAll()).willReturn(authors);
+        given(repository.findAll()).willReturn(authors);
         assertThat(service.getAll()).isEqualTo(authors);
     }
 
     @Test
-    @DisplayName("возвращать список авторов по ID книги;")
-    void getAllByBookId() {
-        List<Author> genres = Arrays.asList(
-                Author.builder().id(1L).name("Test Author 1").build(),
-                Author.builder().id(2L).name("Test Author 2").build(),
-                Author.builder().id(3L).name("Test Author 3").build()
-        );
-        given(dao.findAllByBookId(1L)).willReturn(genres);
-        assertThat(service.getAllByBookId(1L)).isEqualTo(genres);
+    @DisplayName("выбрасывать корректное исключение;")
+    void shouldThrowCorrectException() {
+        given(repository.findById(FIRST_ID)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(FIRST_ID)).isInstanceOf(NotFoundException.class).hasMessage("Author with id 1 not found");
     }
 
 }

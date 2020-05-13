@@ -7,15 +7,18 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Book;
+import ru.otus.homework.model.Comment;
 import ru.otus.homework.model.Genre;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
+import ru.otus.homework.service.CommentService;
 import ru.otus.homework.service.GenreService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -27,6 +30,8 @@ public class ShellSessionRunner {
     private final BookService bookService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final CommentService commentService;
+
     private final InputReader inputReader;
 
     private static final List<String> YES_AND_NO_OPTIONS = Arrays.asList("Y", "N");
@@ -37,16 +42,24 @@ public class ShellSessionRunner {
                 .name(inputReader.prompt("Enter book name"))
                 .isbnCode(inputReader.prompt("Enter ISBN code"))
                 .publicationYear(inputReader.prompt("Enter publication year"))
-                .authorList(createAuthorList())
-                .genreList(createGenreList())
+                .authorList(createAuthorSet())
+                .genreList(createGenreSet())
                 .build();
-        return bookService.getById(bookService.add(book)).toString();
+        return bookService.save(book).toString();
     }
 
     @ShellMethod(value = "Show stored books")
     private String books(@ShellOption(value = "Id of particular book to show", defaultValue = "-1") long id) {
         if (id > 0) {
-            return bookService.getById(id).toString();
+            Book book = bookService.getByIdWithComments(id);
+//            Book book = bookService.getById(id);
+            return book.toString() +
+//                    "\nComments:\n" ;
+                    "\nComments:\n" +
+                    book.getComments()
+                            .stream()
+                            .map(Comment::toString)
+                            .collect(Collectors.joining("\n"));
         } else {
             return bookService.getAll().stream().map(Book::toString).collect(Collectors.joining("\n"));
         }
@@ -60,6 +73,15 @@ public class ShellSessionRunner {
     @ShellMethod(value = "Show stored genres")
     private List<String> genres() {
         return genreService.getAll().stream().map(Genre::toString).collect(Collectors.toList());
+    }
+
+    @ShellMethod(value = "Show comments")
+    private String comments(@ShellOption(value = "Id of particular book to show comments for", defaultValue = "-1") long id) {
+        if (id > 0) {
+            return bookService.getByIdWithComments(id).getComments().stream().map(Comment::toString).collect(Collectors.joining("\n"));
+        } else {
+            return commentService.getAll().stream().map(Comment::toString).collect(Collectors.joining("\n"));
+        }
     }
 
     @ShellMethod(value = "Change something in stored book")
@@ -90,35 +112,69 @@ public class ShellSessionRunner {
 
         currentOption = inputReader.promptWithOptions("Do we change authors?", "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
-            book.setAuthorList(createAuthorList());
+            book.setAuthorList(createAuthorSet());
         }
 
         currentOption = inputReader.promptWithOptions("Do we change genres?", "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
-            book.setGenreList(createGenreList());
+            book.setGenreList(createGenreSet());
         }
 
         currentOption = inputReader.promptWithOptions(String.format("Save?\n%s", book), "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(currentOption)) {
-            bookService.update(book);
+            bookService.save(book);
         }
 
     }
-
 
     @ShellMethod(value = "Delete book by id")
     private void delete(@ShellOption(value = "Id of particular book") long id) {
-        Book book = bookService.getById(id);
-        String lastWarn = inputReader.promptWithOptions(String.format("Do you really want to delete this book?\n%s", book), "N", YES_AND_NO_OPTIONS);
+        Book book = bookService.getByIdWithComments(id);
+
+        String bookWithComments = book.toString() +
+                "\nComments:\n" +
+                book.getComments()
+                        .stream()
+                        .map(Comment::toString)
+                        .collect(Collectors.joining("\n"));
+
+        String lastWarn = inputReader.promptWithOptions(String.format("Do you really want to delete this book with its comments?\n%s", bookWithComments), "N", YES_AND_NO_OPTIONS);
         if ("Y".equals(lastWarn)) {
-            bookService.delete(id);
+            bookService.delete(book);
         }
     }
 
+    @ShellMethod(value = "Create comment", key = {"comment"})
+    private String createComment() {
 
-    private List<Author> createAuthorList() {
+        List<Book> allBooks = bookService.getAll();
+        Map<Long, String> bookOptions = allBooks.stream().collect(Collectors.toMap(Book::getId, Book::getName));
+        Long bookId = inputReader.selectFromList("Books:",
+                "Please enter one of the [] values",
+                bookOptions);
+        Book book = bookService.getByIdWithComments(bookId);
+
+        String commentAuthor = inputReader.prompt("What is your name?");
+        String commentText;
+        do {
+            commentText = inputReader.prompt("Please, enter the comment");
+        } while (commentText.equals(""));
+
+        Comment newComment = Comment.builder()
+                .commentAuthor(commentAuthor.equals("") ? "anonymous" : commentAuthor)
+                .commentText(commentText)
+                .build();
+
+        book.getComments().add(newComment);
+        bookService.save(book);
+
+        return newComment.toString();
+
+    }
+
+    private Set<Author> createAuthorSet() {
         List<Author> allAuthors = authorService.getAll();
-        List<Author> authors = new ArrayList<>();
+        Set<Author> authors = new HashSet<>();
         String currentOption;
         Map<Long, String> authorOptions;
         do {
@@ -143,9 +199,9 @@ public class ShellSessionRunner {
         return authors;
     }
 
-    private List<Genre> createGenreList() {
-        List<Genre> genres = new ArrayList<>();
+    private Set<Genre> createGenreSet() {
         List<Genre> allGenres = genreService.getAll();
+        Set<Genre> genres = new HashSet<>();
         String currentOption;
         Map<Long, String> genreOptions;
         do {

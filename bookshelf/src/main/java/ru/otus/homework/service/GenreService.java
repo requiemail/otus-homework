@@ -6,10 +6,8 @@ import java.util.List;
 
 public interface GenreService {
 
-    long add(Genre genre);
+    Genre save(Genre genre);
     Genre getById(long id);
-    Genre getByName(String name);
     List<Genre> getAll();
-    List<Genre> getAllByBookId(long id);
 
 }

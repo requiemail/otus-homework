@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="beaff503-a8dc-451d-9457-27e9fe1561e6" author="admin" context="dev, test">
+        <insert tableName="comments">
+            <column name="comment_id" value="1"/>
+            <column name="book_id" value="1"/>
+            <column name="comment_author" value="Vasya"/>
+            <column name="comment_text" value="Cool Book"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="comment_id" value="2"/>
+            <column name="book_id" value="1"/>
+            <column name="comment_author" value="Petya"/>
+            <column name="comment_text" value="TL;DR"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="comment_id" value="3"/>
+            <column name="book_id" value="6"/>
+            <column name="comment_author" value="Pasha"/>
+            <column name="comment_text" value="Книга, опубликованная в год моего рождения"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="comment_id" value="4"/>
+            <column name="book_id" value="3"/>
+            <column name="comment_author" value="anonymous"/>
+            <column name="comment_text" value="Bullshit!"/>
+        </insert>
+
+
+        <sql>
+            ALTER SEQUENCE comments_comment_id_seq restart with 5
+        </sql>
+    </changeSet>
+</databaseChangeLog>

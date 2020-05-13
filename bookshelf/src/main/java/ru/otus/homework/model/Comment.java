@@ -1,5 +1,6 @@
 package ru.otus.homework.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 
 @Builder
 @Data
@@ -20,15 +22,19 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "genres")
-public class Genre {
+@Table(name = "comments")
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "genre_id")
+    @Column(name = "comment_id")
     private long id;
-    @Column(name = "genre_name")
-    private String name;
-
+    @Column(name = "comment_text")
+    private String commentText;
+    @Column(name = "comment_author")
+    private String commentAuthor;
+    @ManyToOne
+    @JoinColumn(name="book_id")
+    private Book book;
 
 }
