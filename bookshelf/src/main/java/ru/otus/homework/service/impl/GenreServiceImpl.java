@@ -21,7 +21,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getById(long id) {
+    public Genre getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Genre with id %d not found", id)));
     }
 

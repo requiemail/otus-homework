@@ -22,9 +22,9 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Сервис жанров должен:")
 class GenreServiceImplTest {
 
-    public static final long FIRST_ID = 1L;
-    public static final long SECOND_ID = 2L;
-    public static final long THIRD_ID = 3L;
+    public static final Long FIRST_ID = 1L;
+    public static final Long SECOND_ID = 2L;
+    public static final Long THIRD_ID = 3L;
 
     @Mock
     private GenreRepository repository;

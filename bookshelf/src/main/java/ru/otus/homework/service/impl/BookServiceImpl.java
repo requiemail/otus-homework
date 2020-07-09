@@ -38,13 +38,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getById(long id) {
+    public Book getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Book with id %d not found", id)));
     }
 
     @Override
-    public Book getByIdWithComments(long id) {
+    public Book getByIdWithComments(Long id) {
         return repository.findByIdWithComments(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Book with id %d not found", id)));
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CommentService {
 
-    Comment getById(long id);
+    Comment getById(Long id);
     List<Comment> getAll();
 
 }
