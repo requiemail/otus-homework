@@ -18,7 +18,7 @@ const removeChildren = node => {
   while (node.firstChild) {
     node.removeChild(node.lastChild);
   }
-}
+};
 
 const promptForBook = () => {
   let name = prompt('Введите название книги'),
@@ -41,13 +41,14 @@ const promptForBook = () => {
       }
     ]
   }
-}
+};
+
 const createBook = () => {
   let book = promptForBook();
   restApi(createBooksWithUrl, book)
     .then(() => renderBooksTable())
     .catch(err => console.log(err));
-}
+};
 const updateBook = (id) => {
   let book = {
     id: id,
@@ -59,34 +60,15 @@ const updateBook = (id) => {
       .then(() => renderBooksTable())
       .catch(err => console.log(err));
   }
-}
-
-const renderBooksTable = () => {
-  restApi(getBooksWithUrl).then(books => {
-    let tableBody = document.getElementById('books-table-body');
-    removeChildren(tableBody);
-    createTable(books, tableBody);
-  })
-    .catch(err => console.log(err));
-  ;
-}
-
-function createTable(books, tableBody) {
-  books.forEach(book => {
-    let props = [
-      book.name,
-      book.isbnCode,
-      book.publicationYear,
-      book.authorList.reduce((acc, curValue) => `${curValue.name} ${acc}`, ''),
-      book.genreList.reduce((acc, curValue) => `${curValue.name} ${acc}`, '')
-    ]
-    tableBody.appendChild(createRow(props, book.id));
-  })
-  let button = document.createElement('button');
-  button.onclick = createBook;
-  button.innerText = 'Создать';
-  tableBody.appendChild(button);
-}
+};
+const deleteBook = (id) => {
+  let isConfirmed = confirm('Точно удалить?');
+  if (isConfirmed) {
+    restApi(deleteBooksWithUrl, id)
+      .then(() => renderBooksTable())
+      .catch(err => console.log(err));
+  }
+};
 
 function createRow(props, id) {
   let row = document.createElement('tr');
@@ -98,12 +80,7 @@ function createRow(props, id) {
   });
   let deleteButton = document.createElement('button');
   deleteButton.onclick = () => {
-    let isConfirmed = confirm('Точно удалить?');
-    if (isConfirmed) {
-      restApi(deleteBooksWithUrl, id)
-        .then(() => renderBooksTable())
-        .catch(err => console.log(err));
-    }
+    deleteBook(id);
   };
   deleteButton.innerText = 'Удалить';
   row.appendChild(deleteButton);
@@ -115,5 +92,32 @@ function createRow(props, id) {
   row.appendChild(updateButton);
   return row;
 }
+
+function createTable(books, tableBody) {
+  books.forEach(book => {
+    let props = [
+      book.name,
+      book.isbnCode,
+      book.publicationYear,
+      book.authorList.reduce((acc, curValue) => `${curValue.name} ${acc}`, ''),
+      book.genreList.reduce((acc, curValue) => `${curValue.name} ${acc}`, '')
+    ];
+    tableBody.appendChild(createRow(props, book.id));
+  });
+  let button = document.createElement('button');
+  button.onclick = createBook;
+  button.innerText = 'Создать';
+  tableBody.appendChild(button);
+}
+
+const renderBooksTable = () => {
+  restApi(getBooksWithUrl).then(books => {
+    let tableBody = document.getElementById('books-table-body');
+    removeChildren(tableBody);
+    createTable(books, tableBody);
+  })
+    .catch(err => console.log(err));
+  ;
+};
 
 renderBooksTable();
