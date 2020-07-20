@@ -1,6 +1,8 @@
 package ru.otus.homework.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +36,8 @@ public class Comment {
     @Column(name = "comment_author")
     private String commentAuthor;
     @ManyToOne
-    @JoinColumn(name="book_id")
+    @JoinColumn(name = "book_id")
+    @JsonBackReference
     private Book book;
 
 }
