@@ -10,8 +10,36 @@
             <column name="username" value="ADMIN"/>
             <column name="password" value="$2b$10$KqRE4g8l8Jxnj7ygDKHRfOJXoCgXb/fYc3.lyk/S2fh8Eu/dDMf6G"/>
         </insert>
+        <insert tableName="users">
+            <column name="user_id" value="2"/>
+            <column name="username" value="READER"/>
+            <column name="password" value="$2y$10$lgl/6YX8RwSsjfCtwJY1nuczNzLkRnngsI/IoTnISlspRHcsHdQq6"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role_id" value="1"/>
+            <column name="role_name" value="READER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role_id" value="2"/>
+            <column name="role_name" value="WRITER"/>
+        </insert>
+        <insert tableName="user_role_join">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="user_role_join">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="user_role_join">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="1"/>
+        </insert>
         <sql>
             ALTER SEQUENCE users_user_id_seq restart with 2
+        </sql>
+        <sql>
+            ALTER SEQUENCE roles_role_id_seq restart with 2
         </sql>
     </changeSet>
 </databaseChangeLog>
