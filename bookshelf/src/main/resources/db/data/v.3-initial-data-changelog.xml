@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="62f191f6-0635-469a-8f03-c56cc784ab7c" author="admin" context="dev, test">
+        <insert tableName="users">
+            <column name="user_id" value="1"/>
+            <column name="username" value="ADMIN"/>
+            <column name="password" value="$2b$10$KqRE4g8l8Jxnj7ygDKHRfOJXoCgXb/fYc3.lyk/S2fh8Eu/dDMf6G"/>
+        </insert>
+        <sql>
+            ALTER SEQUENCE users_user_id_seq restart with 2
+        </sql>
+    </changeSet>
+</databaseChangeLog>
