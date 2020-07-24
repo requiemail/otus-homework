@@ -2,14 +2,17 @@ package ru.otus.homework.security.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.otus.homework.security.model.Role;
 import ru.otus.homework.security.model.User;
 import ru.otus.homework.security.repository.UserRepository;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,7 +39,11 @@ public class DaoUserDetailsService implements UserDetailsService {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return null;
+            return user.getRoles()
+                    .stream()
+                    .map(Role::getName)
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
         }
 
         @Override
