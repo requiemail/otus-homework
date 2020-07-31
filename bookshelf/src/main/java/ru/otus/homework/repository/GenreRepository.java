@@ -1,7 +1,6 @@
 package ru.otus.homework.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.otus.homework.model.Author;
 import ru.otus.homework.model.Genre;
 
 import java.util.List;
