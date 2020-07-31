@@ -10,6 +10,9 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
     contexts: dev
+  data:
+    rest:
+      basePath: /spring-data-rest-api
 
   jpa:
     generate-ddl: false
