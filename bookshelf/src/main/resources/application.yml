@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -7,6 +10,9 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
     contexts: dev
+  data:
+    rest:
+      basePath: /spring-data-rest-api
 
   jpa:
     generate-ddl: false
@@ -17,3 +23,16 @@ spring:
 logging:
   level:
     ROOT: INFO
+  file:
+    name: log.file
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
