@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: root
+      password: root
+      authentication-database: admin
+      database: bookshelf
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+logging:
+  level:
+    ROOT: INFO
+  file:
+    name: log.file
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
