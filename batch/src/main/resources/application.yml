@@ -2,6 +2,11 @@ server:
   port: 8080
 
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/bookshelf
+    username: postgres
+    password: postgres
   data:
     mongodb:
       host: localhost
@@ -10,7 +15,8 @@ spring:
       password: root
       authentication-database: admin
       database: bookshelf
-
+  batch:
+    initialize-schema: always
   jpa:
     generate-ddl: false
     hibernate:
