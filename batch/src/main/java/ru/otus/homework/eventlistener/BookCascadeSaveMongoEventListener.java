@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeConvertEvent;
 import org.springframework.stereotype.Component;
-import ru.otus.homework.model.Book;
-import ru.otus.homework.repository.AuthorRepository;
-import ru.otus.homework.repository.GenreRepository;
+import ru.otus.homework.model.mongo.Book;
+import ru.otus.homework.repository.mongo.AuthorRepository;
+import ru.otus.homework.repository.mongo.GenreRepository;
 
 @RequiredArgsConstructor
 @Component
