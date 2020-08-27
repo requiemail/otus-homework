@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/bookshelf
+    username: postgres
+    password: postgres
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: root
+      password: root
+      authentication-database: admin
+      database: bookshelf
+  batch:
+    initialize-schema: always
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+logging:
+  level:
+    ROOT: INFO
+  file:
+    name: log.file
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
