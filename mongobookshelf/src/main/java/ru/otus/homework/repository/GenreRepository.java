@@ -1,13 +1,8 @@
 package ru.otus.homework.repository;
 
-import org.springframework.data.mongodb.core.MongoAdminOperations;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import ru.otus.homework.model.Genre;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface GenreRepository extends MongoRepository<Genre, String> {
+public interface GenreRepository extends ReactiveMongoRepository<Genre, String> {
 
 }
