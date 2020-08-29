@@ -15,14 +15,14 @@ public class BookCascadeSaveMongoEventListener extends AbstractMongoEventListene
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
-    @Override
-    public void onBeforeConvert(BeforeConvertEvent<Object> event) {
-        Object source = event.getSource();
-        if ((source instanceof Book) && (((Book) source).getAuthorList() != null)) {
-            authorRepository.saveAll(((Book) source).getAuthorList());
-        }
-        if ((source instanceof Book) && (((Book) source).getGenreList() != null)) {
-            genreRepository.saveAll(((Book) source).getGenreList());
-        }
-    }
+//    @Override
+//    public void onBeforeConvert(BeforeConvertEvent<Object> event) {
+//        Object source = event.getSource();
+//        if ((source instanceof Book) && (((Book) source).getAuthorList() != null)) {
+//            authorRepository.saveAll(((Book) source).getAuthorList());
+//        }
+//        if ((source instanceof Book) && (((Book) source).getGenreList() != null)) {
+//            genreRepository.saveAll(((Book) source).getGenreList());
+//        }
+//    }
 }
