@@ -44,9 +44,8 @@ public class BookRestController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") String id) {
-        repository.findById(id).flatMap(repository::delete);
-        return id;
+    public void delete(@PathVariable("id") String id) {
+        repository.deleteById(id);
     }
 
 }
