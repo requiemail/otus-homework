@@ -34,10 +34,12 @@ public class Book {
     @Field(name = "publication_year")
     private String publicationYear;
 
-    @DBRef
+//    @DBRef
+    @Field
     private Set<Author> authorList;
 
-    @DBRef
+//    @DBRef
+    @Field
     private Set<Genre> genreList;
 
 }

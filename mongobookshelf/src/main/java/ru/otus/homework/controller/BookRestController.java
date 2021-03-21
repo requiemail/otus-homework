@@ -9,43 +9,43 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.otus.homework.model.Book;
-import ru.otus.homework.service.BookService;
+import ru.otus.homework.repository.BookRepository;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/book")
 @RequiredArgsConstructor
 public class BookRestController {
 
-    private final BookService service;
+    private final BookRepository repository;
 
     @GetMapping("/all")
-    public List<Book> getAllBooks() {
-        return service.getAll();
+    public Flux<Book> getAllBooks() {
+        return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable("id") String id){
-        return service.getById(id);
+    public Mono<Book> getBookById(@PathVariable("id") String id){
+        return repository.findById(id);
     }
 
     @PostMapping
-    public Book create (@RequestBody Book book) {
-        return service.save(book);
+    public Mono<Book> create (@RequestBody Book book) {
+        return repository.save(book);
     }
 
     @PutMapping("/{id}")
-    public Book update(@PathVariable("id") String id, @Valid @RequestBody Book book) {
-        return service.save(book);
+    public Mono<Book> update(@PathVariable("id") String id, @Valid @RequestBody Book book) {
+        return repository.save(book);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") String id) {
-        service.delete(service.getById(id));
-        return id;
+    public void delete(@PathVariable("id") String id) {
+        repository.deleteById(id);
     }
 
 }
